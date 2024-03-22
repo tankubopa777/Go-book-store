@@ -80,10 +80,15 @@ func Start(pctx context.Context, cfg *config.Config, db *mongo.Client) {
 
 	switch s.cfg.App.Name {
 	case "auth":
+		s.authService()
 	case "user":
+		s.userService()
 	case "book":
+		s.bookService()
 	case "useBooks":
+		s.userBooksService()
 	case "payment":
+		s.paymentService()
 	}
 
 	// Use tweleve factor app design

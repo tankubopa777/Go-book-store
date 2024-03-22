@@ -12,7 +12,7 @@ type (
 	}
 )
 
-func NewPaymentRepository(paymentRepository paymentRepository.PaymentRepositoryService) PaymentUsecaseService {
+func NewPaymentUsecase(paymentRepository paymentRepository.PaymentRepositoryService) PaymentUsecaseService {
 	return &paymentUsecase{
 		paymentRepository: paymentRepository,
 	}

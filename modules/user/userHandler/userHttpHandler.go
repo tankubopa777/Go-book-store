@@ -14,6 +14,6 @@ type (
 	}
 )
 
-func NewUserHandler(cfg *config.Config, userUsecase userUsecase.UserUsecaseService) UserHttpHandlerService {
+func NewUserHttpHandler(cfg *config.Config, userUsecase userUsecase.UserUsecaseService) UserHttpHandlerService {
 	return &userHttpHandler{userUsecase: userUsecase}
 }
