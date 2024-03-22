@@ -6,6 +6,7 @@ import (
 	"os"
 	"tansan/config"
 	"tansan/pkg/database"
+	"tansan/server"
 )
 
 func main() {
@@ -24,4 +25,7 @@ func main() {
 	 db := database.DbConn(ctx, &cfg)	
 	 defer db.Disconnect(ctx)
 	 log.Println(db)
+
+	// Start server
+	server.Start(ctx, &cfg, db)
 }

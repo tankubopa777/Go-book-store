@@ -10,6 +10,6 @@ type (
 	}
 )
 
-func NewUserGrpcHandler(userUsecase	userUsecase.UserUsecaseService) userGrpcHandlerService {
-	return userGrpcHandlerService{userUsecase}
+func NewUserGrpcHandler(userUsecase	userUsecase.UserUsecaseService) *userGrpcHandlerService {
+	return &userGrpcHandlerService{userUsecase}
 }

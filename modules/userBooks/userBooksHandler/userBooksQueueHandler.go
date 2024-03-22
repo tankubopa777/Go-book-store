@@ -6,17 +6,17 @@ import (
 )
 
 type (
-	UserBooksHttpHandlerService interface {
+	UserBooksQueueHandlerService interface {
 
 	}
-	userBooksHttpHandler struct {
+	userBooksQueueHandler struct {
 		cfg *config.Config
 		userBooksUsecase userBooksUsecase.UserBooksUsecaseService
 	}
 )
 
-func NewUserBooksHttpHandler(cfg *config.Config, userBooksUsecase userBooksUsecase.UserBooksUsecaseService) UserBooksHttpHandlerService {
-	return &userBooksHttpHandler{
+func NewUserBooksQueueHandler(cfg *config.Config, userBooksUsecase userBooksUsecase.UserBooksUsecaseService) UserBooksQueueHandlerService {
+	return &userBooksQueueHandler{
 		cfg : cfg,
 		userBooksUsecase: userBooksUsecase,
 	}
