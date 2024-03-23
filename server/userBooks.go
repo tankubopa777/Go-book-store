@@ -1,24 +1,24 @@
 package server
 
 import (
-	"tansan/modules/userBooks/userBooksHandler"
-	"tansan/modules/userBooks/userBooksRepository"
-	"tansan/modules/userBooks/userBooksUsecase"
+	"tansan/modules/userbooks/userbooksHandler"
+	"tansan/modules/userbooks/userbooksRepository"
+	"tansan/modules/userbooks/userbooksUsecase"
 )
 
-func (s *server) userBooksService() {
-	repo := userBooksRepository.NewUserBooksRepository(s.db)
-	usecase := userBooksUsecase.NewUserBooksUsecase(repo)
-	httpHandler := userBooksHandler.NewUserBooksHttpHandler(s.cfg, usecase)
-	grpcHandler := userBooksHandler.NewUserBooksGrpcHandler(usecase)
-	queueHandler := userBooksHandler.NewUserBooksQueueHandler(s.cfg, usecase)
+func (s *server) userbooksService() {
+	repo := userbooksRepository.NewUserbooksRepository(s.db)
+	usecase := userbooksUsecase.NewUserbooksUsecase(repo)
+	httpHandler := userbooksHandler.NewUserbooksHttpHandler(s.cfg, usecase)
+	grpcHandler := userbooksHandler.NewUserbooksGrpcHandler(usecase)
+	queueHandler := userbooksHandler.NewUserbooksQueueHandler(s.cfg, usecase)
 
 	_ = httpHandler
 	_ = grpcHandler
 	_ = queueHandler
 
-	userBooks := s.app.Group("/userBooks_v1")
+	userbooks := s.app.Group("/userbooks_v1")
 
 	// Health Check
-	userBooks.GET("", s.healthCheckService)
+	userbooks.GET("", s.healthCheckService)
 }

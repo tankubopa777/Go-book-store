@@ -1,23 +1,23 @@
-package userBooksHandler
+package userbooksHandler
 
 import (
 	"tansan/config"
-	"tansan/modules/userBooks/userBooksUsecase"
+	"tansan/modules/userbooks/userbooksUsecase"
 )
 
 type (
-	UserBooksQueueHandlerService interface {
+	UserbooksQueueHandlerService interface {
 
 	}
-	userBooksQueueHandler struct {
+	userbooksQueueHandler struct {
 		cfg *config.Config
-		userBooksUsecase userBooksUsecase.UserBooksUsecaseService
+		userbooksUsecase userbooksUsecase.UserbooksUsecaseService
 	}
 )
 
-func NewUserBooksQueueHandler(cfg *config.Config, userBooksUsecase userBooksUsecase.UserBooksUsecaseService) UserBooksQueueHandlerService {
-	return &userBooksQueueHandler{
+func NewUserbooksQueueHandler(cfg *config.Config, userbooksUsecase userbooksUsecase.UserbooksUsecaseService) UserbooksQueueHandlerService {
+	return &userbooksQueueHandler{
 		cfg : cfg,
-		userBooksUsecase: userBooksUsecase,
+		userbooksUsecase: userbooksUsecase,
 	}
 }

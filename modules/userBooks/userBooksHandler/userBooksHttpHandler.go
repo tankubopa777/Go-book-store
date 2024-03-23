@@ -1,23 +1,21 @@
-package userBooksHandler
+package userbooksHandler
 
 import (
 	"tansan/config"
-	"tansan/modules/userBooks/userBooksUsecase"
+	"tansan/modules/userbooks/userbooksUsecase"
 )
 
 type (
-	UserBooksHttpHandlerService interface {
-
-	}
-	userBooksHttpHandler struct {
+	UserbooksHttpHandlerService interface {}
+	userbooksHttpHandler struct {
 		cfg *config.Config
-		userBooksUsecase userBooksUsecase.UserBooksUsecaseService
+		userbooksUsecase userbooksUsecase.UserbooksUsecaseService
 	}
 )
 
-func NewUserBooksHttpHandler(cfg *config.Config, userBooksUsecase userBooksUsecase.UserBooksUsecaseService) UserBooksHttpHandlerService {
-	return &userBooksHttpHandler{
+func NewUserbooksHttpHandler(cfg *config.Config, userbooksUsecase userbooksUsecase.UserbooksUsecaseService) UserbooksHttpHandlerService {
+	return &userbooksHttpHandler{
 		cfg : cfg,
-		userBooksUsecase: userBooksUsecase,
+		userbooksUsecase: userbooksUsecase,
 	}
 }

@@ -1,20 +1,20 @@
-package userBooksUsecase
+package userbooksUsecase
 
 import (
-	"tansan/modules/userBooks/userBooksRepository"
+	"tansan/modules/userbooks/userbooksRepository"
 )
 
 type (
-	UserBooksUsecaseService interface {
+	UserbooksUsecaseService interface {}
 
-	}
-	userBooksUsecase struct {
-		userBooksRepository userBooksRepository.UserBooksRepositoryService
+	userbooksUsecase struct {
+		userbooksRepository userbooksRepository.UserbooksRepositoryService
 	}
 )
 
-func NewUserBooksUsecase(userBooksRepository userBooksRepository.UserBooksRepositoryService) UserBooksUsecaseService {
-	return &userBooksUsecase{
-		userBooksRepository: userBooksRepository,
+func NewUserbooksUsecase(userbooksRepository userbooksRepository.UserbooksRepositoryService) UserbooksUsecaseService {
+	return &userbooksUsecase{
+		userbooksRepository: userbooksRepository,
 	}
 }
+

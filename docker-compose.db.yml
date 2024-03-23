@@ -31,9 +31,9 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: 123456
 
-  userBooks-db:
+  userbooks-db:
     image: mongo
-    container_name: userBooks-db
+    container_name: userbooks-db
     ports:
       - "27020:27017"
     environment:

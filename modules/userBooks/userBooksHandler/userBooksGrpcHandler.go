@@ -1,15 +1,15 @@
-package userBooksHandler
+package userbooksHandler
 
-import "tansan/modules/userBooks/userBooksUsecase"
+import "tansan/modules/userbooks/userbooksUsecase"
 
 type (
-	userBooksGrpcHandler struct {
-		userBooksUsecase userBooksUsecase.UserBooksUsecaseService
+	userbooksGrpcHandler struct {
+		userbooksUsecase userbooksUsecase.UserbooksUsecaseService
 	}
 )
 
-func NewUserBooksGrpcHandler(userBooksUsecase userBooksUsecase.UserBooksUsecaseService) *userBooksGrpcHandler {
-	return &userBooksGrpcHandler{
-		userBooksUsecase: userBooksUsecase,
+func NewUserbooksGrpcHandler(userbooksUsecase userbooksUsecase.UserbooksUsecaseService) *userbooksGrpcHandler {
+	return &userbooksGrpcHandler{
+		userbooksUsecase: userbooksUsecase,
 	}
 }

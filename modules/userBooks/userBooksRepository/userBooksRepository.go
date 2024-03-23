@@ -1,4 +1,4 @@
-package userBooksRepository
+package userbooksRepository
 
 import (
 	"context"
@@ -7,17 +7,17 @@ import (
 )
 
 type (
-	UserBooksRepositoryService interface {}
+	UserbooksRepositoryService interface {}
 
-	userBooksRepository struct {
+	userbooksRepository struct {
 		db *mongo.Client
 	}
 )
 
-func NewUserBooksRepository(db *mongo.Client) UserBooksRepositoryService {
-	return &userBooksRepository{db}
+func NewUserbooksRepository(db *mongo.Client) UserbooksRepositoryService {
+	return &userbooksRepository{db}
 }
 
-func (r *userBooksRepository) userBooksDbConn(pctx context.Context) *mongo.Database {
-	return r.db.Database("userBooks_db")
+func (r *userbooksRepository) userbooksDbConn(pctx context.Context) *mongo.Database {
+	return r.db.Database("userbooks_db")
 }

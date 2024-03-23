@@ -47,13 +47,13 @@ type (
 		AuthUrl string
 		UserUrl string
 		BookUrl string
-		UserBooksUrl string
+		UserbooksUrl string
 		PaymentUrl string
 	}
 	
 	Paginate struct {
 		BookNextPageUrl string
-		UserBooksNextPageUrl string
+		UserbooksNextPageUrl string
 	}
 
 )
@@ -100,12 +100,12 @@ func LoadConfig(path string) Config {
 			AuthUrl: os.Getenv("GRPC_AUTH_URL"),
 			UserUrl: os.Getenv("GRPC_USER_URL"),
 			BookUrl: os.Getenv("GRPC_BOOK_URL"),
-			UserBooksUrl: os.Getenv("GRPC_USERBOOKS_URL"),
+			UserbooksUrl: os.Getenv("GRPC_USERBOOKS_URL"),
 			PaymentUrl: os.Getenv("GRPC_PAYMENT_URL"),
 		},
 		Paginate : Paginate{
 			BookNextPageUrl: os.Getenv("PAGINATE_BOOK_NEXT_PAGE_BASED_URL"),
-			UserBooksNextPageUrl: os.Getenv("PAGINATE_USERBOOKS_NEXT_PAGE_BASED_URL"),
+			UserbooksNextPageUrl: os.Getenv("PAGINATE_USERBOOKS_NEXT_PAGE_BASED_URL"),
 		},
 }
 }

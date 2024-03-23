@@ -85,8 +85,8 @@ func Start(pctx context.Context, cfg *config.Config, db *mongo.Client) {
 		s.userService()
 	case "book":
 		s.bookService()
-	case "useBooks":
-		s.userBooksService()
+	case "userbooks":
+		s.userbooksService()
 	case "payment":
 		s.paymentService()
 	}

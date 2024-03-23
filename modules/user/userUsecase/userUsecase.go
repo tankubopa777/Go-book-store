@@ -13,5 +13,7 @@ type (
 )
 
 func NewUserUsecase(userRepository userRepository.UserRepositoryService) UserUsecaseService {
-	return &userUsecase{userRepository: userRepository}
+	return &userUsecase{
+		userRepository: userRepository,
+	}
 }
