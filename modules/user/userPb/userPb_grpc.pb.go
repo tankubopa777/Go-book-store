@@ -4,7 +4,7 @@
 // - protoc             v4.25.3
 // source: modules/user/userPb/userPb.proto
 
-package authPb
+package userPb
 
 import (
 	context "context"

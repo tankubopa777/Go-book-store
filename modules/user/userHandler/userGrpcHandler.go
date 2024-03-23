@@ -27,6 +27,6 @@ func (g *userGrpcHandler) FindOneUserProfileToRefresh(ctx context.Context, req *
 	return nil, nil
 }
 
-func (g *userGrpcHandler) GetPlayerSavingAccount(ctx context.Context, req *userPb.GetUserSavingAccountReq) (*userPb.GetUserSavingAccountRes, error) {
+func (g *userGrpcHandler) GetUserSavingAccount(ctx context.Context, req *userPb.GetUserSavingAccountReq) (*userPb.GetUserSavingAccountRes, error) {
 	return nil, nil
 }

@@ -1,0 +1,27 @@
+// Version
+syntax = "proto3";
+
+// Package name
+option go_package = "tansan/modules/book/bookPb";
+
+// Structure
+message FindBooksInIdsReq {
+    repeated int32 ids = 1;
+}
+
+message FindBooksInIdsRes {
+    repeated Book books = 1;
+}
+
+message Book {
+    string id = 1;
+    string title = 2;
+    double price = 3;
+    string imageUrl = 4;
+    int32 damage =5;
+}
+
+// Methods
+service bookGrpcService {
+    rpc FindBooksInIds(FindBooksInIdsReq) returns (FindBooksInIdsRes);
+}
