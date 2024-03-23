@@ -1,4 +1,4 @@
-package model
+package models
 
 type (
 	// Token Based is a struct to map the token based

@@ -6,7 +6,7 @@ import (
 
 type (
 	UserbooksUsecaseService interface {}
-
+	
 	userbooksUsecase struct {
 		userbooksRepository userbooksRepository.UserbooksRepositoryService
 	}
@@ -17,4 +17,3 @@ func NewUserbooksUsecase(userbooksRepository userbooksRepository.UserbooksReposi
 		userbooksRepository: userbooksRepository,
 	}
 }
-
