@@ -20,10 +20,4 @@ type (
 		Username string `json:"username" form:"username" validate:"required,max=64"`
 	}
 	
-	CreateUserTransactionReq struct {
-		UserId string `json:"user_id" validate:"required,max=64"`
-		Amount float64 `json:"amount" validate:"required"`
-	}
-
-
 )

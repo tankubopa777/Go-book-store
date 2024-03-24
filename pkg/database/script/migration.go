@@ -10,7 +10,6 @@ import (
 
 func main() {
 	ctx := context.Background()
-	_ = ctx
 
 	// Initialize configuration
 	cfg := config.LoadConfig(func() string {
@@ -22,10 +21,14 @@ func main() {
 
 	switch cfg.App.Name {
 	case "user":
+		migration.UserMigrate(ctx, &cfg)
 	case "auth":
 		migration.AuthMigrate(ctx, &cfg)
 	case "book":
-	case "userbook":
+		migration.BookMigrate(ctx, &cfg)
+	case "userbooks":
+		migration.UserbooksMigrate(ctx, &cfg)
 	case "payment":
+		migration.PaymentMigrate(ctx, &cfg)
 	}
 }

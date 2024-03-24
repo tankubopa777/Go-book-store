@@ -21,8 +21,6 @@ func AuthMigrate(pctx context.Context, cfg *config.Config) {
 
 	col := db.Collection("auth")
 
-	// indexs
-
 	// auth
 	indexs, _ := col.Indexes().CreateMany(pctx, []mongo.IndexModel{
 		{Keys: bson.D{{"_id", 1}}},
