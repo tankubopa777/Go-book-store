@@ -27,7 +27,6 @@ func (s *server) userService() {
 	}()
 
 
-	_ = httpHandler
 	_ = grpcHandler
 	_ = queueHandler
 
@@ -35,4 +34,6 @@ func (s *server) userService() {
 
 	// Health Check
 	user.GET("", s.healthCheckService)
+
+	user.POST("/user/register", httpHandler.CreateUser)
 }
