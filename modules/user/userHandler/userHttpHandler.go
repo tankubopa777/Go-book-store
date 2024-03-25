@@ -3,6 +3,7 @@ package userHandler
 import (
 	"context"
 	"net/http"
+	"strings"
 	"tansan/config"
 	"tansan/modules/user"
 	"tansan/modules/user/userUsecase"
@@ -15,6 +16,7 @@ import (
 type (
 	UserHttpHandlerService interface {
 		CreateUser(c echo.Context) error
+		FindOneUserProfile(c echo.Context) error
 	}
 
 	userHttpHandler struct {
@@ -45,4 +47,17 @@ func (h *userHttpHandler) CreateUser(c echo.Context) error {
 
 	return response.SuccessResponse(c, http.StatusCreated, res)
 
+}
+
+func (h *userHttpHandler) FindOneUserProfile(c echo.Context) error {
+	ctx := context.Background()
+
+	userId := strings.TrimPrefix(c.Param("user_id"), "user:")
+
+	res, err := h.userUsecase.FindOneUserProfile(ctx, userId)
+	if err != nil {
+		return response.ErrResponse(c, http.StatusInternalServerError, err.Error())
+	}
+
+	return response.SuccessResponse(c, http.StatusOK, res)
 }

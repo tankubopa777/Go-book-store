@@ -36,4 +36,5 @@ func (s *server) userService() {
 	user.GET("", s.healthCheckService)
 
 	user.POST("/user/register", httpHandler.CreateUser)
+	user.GET("/user/:user_id", httpHandler.FindOneUserProfile)
 }
