@@ -20,6 +20,8 @@ type (
 		IsUniqueUser(pctx context.Context, email, username string) bool
 		InsertOneUser(pctx context.Context, req *user.User) (primitive.ObjectID, error)
 		FindOneUserProfile(pctx context.Context, userId string) (*user.UserProfileBson, error)
+		InsertOneUserTransaction(pctx context.Context, req *user.UserTransaction) error
+		GetUserSavingAccount(pctx context.Context, userId string) (*user.UserSavingAccount, error)
 	}
 
 	userRepository struct {
@@ -99,6 +101,69 @@ func (r *userRepository) FindOneUserProfile(pctx context.Context, userId string)
 	).Decode(result); err != nil {
 		log.Printf("Error: FindOneUserProfile: %s", err.Error())
 		return nil, errors.New("error: user profile not found")
+	}
+
+	return result, nil
+}
+
+func (r *userRepository) InsertOneUserTransaction(pctx context.Context, req *user.UserTransaction) error {
+	ctx, cancel := context.WithTimeout(pctx, 10*time.Second)
+	defer cancel()
+
+	db := r.userDbConn(ctx)
+	col := db.Collection("user_transactions")
+	
+	result, err := col.InsertOne(ctx, req)
+	if err != nil {
+		return errors.New("error: insert one user transaction failed")
+	}
+	log.Printf("Result: InsertOneUserTransaction: %v", result.InsertedID)
+
+
+	return nil 
+}
+
+func (r *userRepository) GetUserSavingAccount(pctx context.Context, userId string) (*user.UserSavingAccount, error) {
+	ctx, cancel := context.WithTimeout(pctx, 10*time.Second)
+	defer cancel()
+
+	db := r.userDbConn(ctx)
+	col := db.Collection("user_transactions")
+
+	filter := bson.A{
+		bson.D{{"$match", bson.D{{"user_id", userId}}}},
+		bson.D{
+			{"$group",
+				bson.D{
+					{"_id", "$user_id"},
+					{"balance", bson.D{{"$sum", "$amount"}}},
+				},
+			},
+		},
+		bson.D{
+			{"$project",
+				bson.D{
+					{"user_id", "$_id"},
+					{"_id", 0},
+					{"balance", 1},
+				},
+			},
+		},
+	}
+
+	result := new(user.UserSavingAccount)
+
+	cursors, err := col.Aggregate(ctx, filter)
+	if err != nil {
+		log.Printf("Error: GetUserSavingaccount: %v", err)
+		return nil, errors.New("error: get user saving account failed")
+	}
+
+	for cursors.Next(ctx) {
+		if err := cursors.Decode(result); err != nil {
+			log.Printf("Error: GetUserSavingaccount: %v", err)
+			return nil, errors.New("error: get user saving account failed")
+		}
 	}
 
 	return result, nil

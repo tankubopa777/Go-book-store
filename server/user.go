@@ -37,4 +37,6 @@ func (s *server) userService() {
 
 	user.POST("/user/register", httpHandler.CreateUser)
 	user.GET("/user/:user_id", httpHandler.FindOneUserProfile)
+	user.POST("/user/add-money", httpHandler.AddUserMoney)
+	user.GET("/user/account/:user_id", httpHandler.GetUserSavingAccount)
 }

@@ -14,6 +14,8 @@ type (
 	UserUsecaseService interface {
 		CreateUser(pctx context.Context, req *user.CreateUserReq) (*user.UserProfile, error)
 		FindOneUserProfile(pctx context.Context, userId string) (*user.UserProfile, error)
+		AddUserMoney(pctx context.Context, req *user.CreateUserTransactionReq) (*user.UserSavingAccount, error)
+		GetUserSavingAccount(pctx context.Context, userId string) (*user.UserSavingAccount, error)
 	}
 
 	userUsecase struct {
@@ -63,6 +65,9 @@ func (u *userUsecase) FindOneUserProfile(pctx context.Context, userId string) (*
 		return nil, err
 	}
 
+	// Bangkok unit time
+	// 2006-01-02 15:04:05
+
 	return &user.UserProfile{
 		Id: result.Id.Hex(),
 		Email: result.Email,
@@ -70,4 +75,21 @@ func (u *userUsecase) FindOneUserProfile(pctx context.Context, userId string) (*
 		CreateAt: result.CreateAt.Format("2006-01-02 15:04:05"),
 		UpdateAt: result.UpdateAt.Format("2006-01-02 15:04:05"),
 	}, nil
+}
+
+func (u *userUsecase) AddUserMoney(pctx context.Context, req *user.CreateUserTransactionReq) (*user.UserSavingAccount ,error) {
+	// Insert one user transaction
+	if err := u.userRepository.InsertOneUserTransaction(pctx, &user.UserTransaction{
+		UserId: req.UserId,
+		Amount: req.Amount,
+		CreatedAt: utils.LocalTime(),
+	}); err != nil {
+		return nil, err
+	}
+
+	return u.userRepository.GetUserSavingAccount(pctx, req.UserId)
+}
+
+func (u *userUsecase) GetUserSavingAccount(pctx context.Context, userId string) (*user.UserSavingAccount, error) {
+	return u.userRepository.GetUserSavingAccount(pctx, userId)
 }
