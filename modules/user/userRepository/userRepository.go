@@ -22,6 +22,7 @@ type (
 		FindOneUserProfile(pctx context.Context, userId string) (*user.UserProfileBson, error)
 		InsertOneUserTransaction(pctx context.Context, req *user.UserTransaction) error
 		GetUserSavingAccount(pctx context.Context, userId string) (*user.UserSavingAccount, error)
+		FindOneUserCredential(pctx context.Context, email string) (*user.User, error) 
 	}
 
 	userRepository struct {
@@ -164,6 +165,26 @@ func (r *userRepository) GetUserSavingAccount(pctx context.Context, userId strin
 			log.Printf("Error: GetUserSavingaccount: %v", err)
 			return nil, errors.New("error: get user saving account failed")
 		}
+	}
+
+	return result, nil
+}
+
+func (r *userRepository) FindOneUserCredential(pctx context.Context, email string) (*user.User, error) {
+	ctx, cancel := context.WithTimeout(pctx, 10*time.Second)
+	defer cancel()
+
+	db := r.userDbConn(ctx)
+	col := db.Collection("users")
+
+	result := new(user.User)
+
+	if err := col.FindOne(
+		ctx,
+		bson.M{"email": email},
+	).Decode(result); err != nil {
+		log.Printf("Error: FindOneUserCredential: %v", err)
+		return nil, errors.New("error: email is invalid")
 	}
 
 	return result, nil

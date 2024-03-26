@@ -5,8 +5,8 @@ type (
 		Id string `json:"id"`
 		Email string `json:"email"`
 		Username string `json:"username"`
-		CreateAt string `json:"created_at"`
-		UpdateAt string `json:"updated_at"`
+		CreatedAt string `json:"created_at"`
+		UpdatedAt string `json:"updated_at"`
 	}
 
 	UserClaims struct {

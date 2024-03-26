@@ -22,14 +22,15 @@ type (
 
 	ProfileIntercepter struct {
 		*user.UserProfile
-		Credential *Credential `json:"credential"`
+		Credential *CredentialRes `json:"credential"`
 	}
 
 	CredentialRes struct {
-		Id 		 string `json:"id" bson:"_id,omitempty"`
-		UserId       string `json:"user_id" bson:"user_id"`
-		RoleCode     int `json:"role_code" bson:"role_code"`
-		AccessToken  string `json:"access"`
+		Id 		 string `json:"id"`
+		UserId       string `json:"user_id"`
+		RoleCode     int `json:"role_code"`
+		RefreshToken string `json:"refresh"`
+		AccessToken  string `json:"access_token"`
 		CreatedAt	time.Time `json:"created_at"`
 		UpdatedAt	time.Time `json:"updated_at"`
 	}
