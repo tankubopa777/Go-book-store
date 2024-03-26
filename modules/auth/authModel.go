@@ -12,7 +12,8 @@ type (
 	}
 
 	RefreshTokenReq struct {
-		RefreshTokenReq string `json:"refresh_token" form:"refresh_token" validate:"required.max=500"`
+		CredentialId string `json:"credential_id" form:"credential_id" validate:"required,max=64"`
+		RefreshToken string `json:"refresh_token" form:"refresh_token" validate:"required,max=500"`
 	}
 
 	InsertUserRole struct {
@@ -29,9 +30,13 @@ type (
 		Id 		 string `json:"id"`
 		UserId       string `json:"user_id"`
 		RoleCode     int `json:"role_code"`
-		RefreshToken string `json:"refresh"`
+		RefreshToken string `json:"refresh_token"`
 		AccessToken  string `json:"access_token"`
 		CreatedAt	time.Time `json:"created_at"`
 		UpdatedAt	time.Time `json:"updated_at"`
+	}
+
+	LogoutReq struct {
+		CredentialId string `json:"credential_id" form:"credential_id" validate:"required,max=64"`
 	}
 )

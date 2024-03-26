@@ -24,7 +24,7 @@ func (g *userGrpcHandler) CredentialSearch(ctx context.Context, req *userPb.Cred
 }
 
 func (g *userGrpcHandler) FindOneUserProfileToRefresh(ctx context.Context, req *userPb.FindOneUserProfileToRefreshReq) (*userPb.UserProfile, error) {
-	return nil, nil
+	return g.userUsecase.FindOneUserProfileToRefresh(ctx, req.UserId)
 }
 
 func (g *userGrpcHandler) GetUserSavingAccount(ctx context.Context, req *userPb.GetUserSavingAccountReq) (*userPb.GetUserSavingAccountRes, error) {

@@ -20,6 +20,7 @@ type (
 		AddUserMoney(pctx context.Context, req *user.CreateUserTransactionReq) (*user.UserSavingAccount, error)
 		GetUserSavingAccount(pctx context.Context, userId string) (*user.UserSavingAccount, error)
 		FindOneUserCredential(pctx context.Context, password, email string) (*userPb.UserProfile, error)
+		FindOneUserProfileToRefresh(pctx context.Context, userId string) (*userPb.UserProfile, error)
 	}
 
 	userUsecase struct {
@@ -122,5 +123,23 @@ func (u *userUsecase) FindOneUserCredential(pctx context.Context, password, emai
 		RoleCode:  int32(roleCode),
 		CreatedAt: result.CreateAt.In(loc).String(),
 		UpdatedAt: result.UpdateAt.In(loc).String(),
+	}, nil
+}
+
+func (u *userUsecase) FindOneUserProfileToRefresh(pctx context.Context, userId string) (*userPb.UserProfile, error) {
+	result, err := u.userRepository.FindOneUserProfile(pctx, userId)
+	if err != nil {
+		return nil, err
+	}
+
+	roleCode := 0
+
+	return &userPb.UserProfile{
+		Id:       result.Id.Hex(),
+		Email:    result.Email,
+		Username: result.Username,
+		RoleCode: int32(roleCode),
+		CreatedAt: result.CreateAt.Format("2006-01-02 15:04:05"),
+		UpdatedAt: result.UpdateAt.Format("2006-01-02 15:04:05"),
 	}, nil
 }

@@ -20,13 +20,14 @@ func LocalTime() time.Time {
 
 // ConvertStringTimeToTime is a function to convert string time to time
 func ConvertStringTimeToTime(t string) time.Time {
-	layout := "2006-01-02T15:04:05.000Z"
+	// thai time layout
+	// layout := "2006-01-02 15:04:05.999999999 -0700 MST"
+	layout := "2006-01-02 15:04:05.999 -0700 MST"
 	result, err := time.Parse(layout, t)
 	if err != nil {
 		log.Printf("Error: Parse time failed: %v", err)
 	}
 
-	loc, _ := time.LoadLocation("Asia/Bangkok")
-	return result.In(loc)
+	return result
 }
 
