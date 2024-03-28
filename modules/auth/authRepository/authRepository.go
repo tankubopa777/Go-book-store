@@ -7,6 +7,7 @@ import (
 	"tansan/modules/auth"
 	userPb "tansan/modules/user/userPb"
 	"tansan/pkg/grpccon"
+	"tansan/pkg/jwtauth"
 	"tansan/pkg/utils"
 	"time"
 
@@ -44,6 +45,7 @@ func (r *authRepository) CredentialSearch(pctx context.Context, grpcUrl string, 
 	ctx, cancel := context.WithTimeout(pctx, 30*time.Second)
 	defer cancel()
 
+	jwtauth.SetApiKeyInContext(&ctx)
 	conn, err := grpccon.NewGrpcClient(grpcUrl)
 	if err != nil {
 		log.Printf("Error: gRPC connection failed: %v", err.Error())
@@ -63,6 +65,7 @@ func (r *authRepository) FindOneUserProfileToRefresh(pctx context.Context, grpcU
 	ctx, cancel := context.WithTimeout(pctx, 30*time.Second)
 	defer cancel()
 
+	jwtauth.SetApiKeyInContext(&ctx)
 	conn, err := grpccon.NewGrpcClient(grpcUrl)
 	if err != nil {
 		log.Printf("Error: gRPC connection failed: %v", err.Error())

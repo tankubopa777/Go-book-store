@@ -10,6 +10,7 @@ import (
 	"tansan/modules/middleware/middlewareHandler"
 	"tansan/modules/middleware/middlewareRepository"
 	"tansan/modules/middleware/middlewareUsecase"
+	"tansan/pkg/jwtauth"
 	"time"
 
 	"github.com/labstack/echo/v4"
@@ -59,6 +60,8 @@ func Start(pctx context.Context, cfg *config.Config, db *mongo.Client) {
 		cfg: cfg,
 		middleware: newMiddleware(cfg),
 	}
+
+	jwtauth.SetApiKey(cfg.Jwt.ApiSecretKey)
 	
 	// Basic middleware
 	// Request Timeout

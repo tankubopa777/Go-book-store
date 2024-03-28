@@ -169,5 +169,5 @@ func SetApiKey(secret string) {
 }
 
 func SetApiKeyInContext(pctx *context.Context) {
-	*pctx = metadata.NewOutgoingContext(*pctx, metadata.Pairs("api-key", apiKeyInstant))
+	*pctx = metadata.NewOutgoingContext(*pctx, metadata.Pairs("auth", apiKeyInstant))
 }

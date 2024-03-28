@@ -6,6 +6,7 @@ import (
 	"log"
 	authPb "tansan/modules/auth/authPb"
 	"tansan/pkg/grpccon"
+	"tansan/pkg/jwtauth"
 	"time"
 )
 
@@ -27,6 +28,7 @@ func (r *middlewareRepository) AccessTokenSearch(pctx context.Context, grpcUrl, 
 	ctx, cancel := context.WithTimeout(pctx, 30*time.Second)
 	defer cancel()
 
+	jwtauth.SetApiKeyInContext(&ctx)
 	conn, err := grpccon.NewGrpcClient(grpcUrl)
 	if err != nil {
 		log.Printf("Error: gRPC connection failed: %v", err.Error())
@@ -55,13 +57,14 @@ func (r *middlewareRepository) AccessTokenSearch(pctx context.Context, grpcUrl, 
 func (r *middlewareRepository) RolesCount(pctx context.Context, grpcUrl string,) (int64, error) {
 	ctx, cancel := context.WithTimeout(pctx, 30*time.Second)
 	defer cancel()
-
+	
 	conn, err := grpccon.NewGrpcClient(grpcUrl)
 	if err != nil {
 		log.Printf("Error: gRPC connection failed: %v", err.Error())
 		return -1, errors.New("error: gRPC connection failed")
 	}
 
+	jwtauth.SetApiKeyInContext(&ctx)
 	result, err := conn.Auth().RolesCount(ctx, &authPb.RolesCountReq{})
 	if err != nil {
 		log.Printf("Error: CredentialSearch failed: %v", err.Error())

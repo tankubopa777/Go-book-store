@@ -8,7 +8,7 @@ import (
 type (
 	UserLoginReq struct {
 		Email    string `json:"email" form:"email" validate:"required,email,max=255"`
-		Password string `json:"password" form:"password" validate:"required,min=8,max=32"`
+		Password string `json:"password" form:"password" validate:"required,max=32"`
 	}
 
 	RefreshTokenReq struct {
