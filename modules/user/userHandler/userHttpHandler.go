@@ -70,6 +70,7 @@ func (h *userHttpHandler) AddUserMoney(c echo.Context) error {
 	wrapper := request.ContextWrapper(c)
 
 	req := new(user.CreateUserTransactionReq)
+	req.UserId = c.Get("user_id").(string)
 
 	if err := wrapper.Bind(req); err != nil {
 		return response.ErrResponse(c, http.StatusBadRequest, err.Error())
@@ -86,7 +87,7 @@ func (h *userHttpHandler) AddUserMoney(c echo.Context) error {
 func (h *userHttpHandler) GetUserSavingAccount(c echo.Context) error {
 	ctx := context.Background()
 
-	userId := c.Param("user_id")
+	userId := c.Get("user_id").(string)
 	
 	res, err := h.userUsecase.GetUserSavingAccount(ctx, userId)
 	if err != nil {

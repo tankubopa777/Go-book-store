@@ -13,7 +13,7 @@ type (
 	}
 
 	BookShowCase struct {
-		ItemId string `json:"book_id"`
+		BookId string `json:"book_id"`
 		Title string `json:"title"`
 		Price float64 `json:"price"`
 		Damage int `json:"damage"`
@@ -31,7 +31,7 @@ type (
 		Damage int `json:"damage" validate:"required"`
 	}
 
-	EnableOrDisableItemReq struct {
+	EnableOrDisableBookReq struct {
 		UsageStatus bool `json:"usage_status"`
 	}
 )
