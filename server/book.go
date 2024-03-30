@@ -32,4 +32,6 @@ func (s *server) bookService() {
 	// Health Check
 	book.GET("", s.healthCheckService)
 	book.POST("/book", s.middleware.JwtAuthorization(s.middleware.RbacAuthorization(httpHandler.CreateBook, []int{1,0})))
+	book.GET("/book/:book_id", httpHandler.FindOneBook)
+	book.GET("/book", httpHandler.FindManyBooks)
 }
