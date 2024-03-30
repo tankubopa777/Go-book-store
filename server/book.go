@@ -25,11 +25,11 @@ func (s *server) bookService() {
 		grpcServer.Serve(lis)
 	}()
 
-	_ = httpHandler
 	_ = grpcHandler
 
 	book := s.app.Group("/book_v1")
 
 	// Health Check
 	book.GET("", s.healthCheckService)
+	book.POST("/book", s.middleware.JwtAuthorization(s.middleware.RbacAuthorization(httpHandler.CreateBook, []int{1,0})))
 }
