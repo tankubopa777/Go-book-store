@@ -2,6 +2,7 @@ package bookHandler
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strings"
 	"tansan/config"
@@ -19,6 +20,7 @@ type (
 		FindOneBook(c echo.Context) error
 		FindManyBooks(c echo.Context) error
 		EditBook(c echo.Context) error
+		EnableOrDisableBook(c echo.Context) error 
 	}
 
 	bookHttpHandler struct {
@@ -104,4 +106,19 @@ func (h *bookHttpHandler) EditBook(c echo.Context) error {
 	}
 
 	return response.SuccessResponse(c, http.StatusCreated, res)
+}
+
+func (h *bookHttpHandler) EnableOrDisableBook(c echo.Context) error {
+	ctx := context.Background()
+
+	bookId := strings.TrimPrefix(c.Param("book_id"), "book:")
+
+	res, err := h.bookUsecase.EnableOrDisableBook(ctx, bookId)
+	if err != nil {
+		return response.ErrResponse(c, http.StatusInternalServerError, err.Error())
+	}
+
+	return response.SuccessResponse(c, http.StatusOK, map[string]any{
+		"message": fmt.Sprintf("book_id: %s is successfully is activated to: %v", bookId, res),
+	})
 }

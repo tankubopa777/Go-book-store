@@ -21,7 +21,8 @@ type (
 		CreateBook(pctx context.Context, req *book.CreateBookReq) (any, error)
 		FindOneBook(pctx context.Context, bookId string) (*book.BookShowCase, error)
 		FindManyBooks(pctx context.Context, basePaginateUrl string, req *book.BookSearchReq) (*models.PaginateRes, error)
-		EditBook(pctx context.Context, bookId string, req *book.BookUpdateReq) (*book.BookShowCase, error) 
+		EditBook(pctx context.Context, bookId string, req *book.BookUpdateReq) (*book.BookShowCase, error)
+		EnableOrDisableBook(pctx context.Context, bookId string) (bool, error)
 	}
 
 	bookUsecase struct {
@@ -162,3 +163,15 @@ func (u *bookUsecase) EditBook(pctx context.Context, bookId string, req *book.Bo
 	return u.FindOneBook(pctx, bookId)
 }
 
+func (u *bookUsecase) EnableOrDisableBook(pctx context.Context, bookId string) (bool, error) {
+	result, err := u.bookRepository.FindOneBook(pctx, bookId)
+	if err != nil {
+		return false, err
+	}
+
+	if err := u.bookRepository.EnableOrDisableBook(pctx, bookId, !result.UsageStatus); err != nil {
+		return false, err
+	}
+
+	return !result.UsageStatus,nil
+}

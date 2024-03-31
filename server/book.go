@@ -35,4 +35,5 @@ func (s *server) bookService() {
 	book.GET("/book/:book_id", httpHandler.FindOneBook)
 	book.GET("/book", httpHandler.FindManyBooks)
 	book.PATCH("/book/:book_id", s.middleware.JwtAuthorization(s.middleware.RbacAuthorization(httpHandler.EditBook, []int{1,0})))
+	book.PATCH("/book/:book_id/enable-disable", s.middleware.JwtAuthorization(s.middleware.RbacAuthorization(httpHandler.EnableOrDisableBook, []int{1,0})))
 }

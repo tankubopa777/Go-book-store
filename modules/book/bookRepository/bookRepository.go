@@ -22,6 +22,7 @@ type (
 		FindManyBooks(pctx context.Context, filter primitive.D, opts []*options.FindOptions) ([]*book.BookShowCase, error)
 		CountBooks(pctx context.Context, filter primitive.D) (int64, error)
 		UpdateOneBook(pctx context.Context, bookId string, req primitive.M) error
+		EnableOrDisableBook(pctx context.Context, bookId string, isActive bool) error
 	}
 
 	bookRepository struct{
@@ -145,6 +146,24 @@ func (r *bookRepository) UpdateOneBook(pctx context.Context, bookId string, req 
 	}
 	log.Printf("UpdateOneBook: %v", result.ModifiedCount)
 
+
+	return nil
+}
+
+func (r *bookRepository) EnableOrDisableBook(pctx context.Context, bookId string, isActive bool) error {
+	ctx, cancel := context.WithTimeout(pctx, 10*time.Second)
+	defer cancel()
+
+	db := r.bookDbConn(ctx)
+	col := db.Collection("books")
+
+	result, err := col.UpdateOne(ctx, bson.M{"_id": utils.ConvertToObjectId(bookId)}, bson.M{"$set": bson.M{"usage_status": isActive}})
+	if err != nil {
+		log.Printf("Error: EnableOrDisableBook failed: %v", err.Error())
+		return errors.New("error: enable or disable book failed")
+	}
+
+	log.Println("EnableOrDisableBook: ", result.ModifiedCount)
 
 	return nil
 }
