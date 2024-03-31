@@ -18,6 +18,7 @@ type (
 		CreateBook(c echo.Context) error
 		FindOneBook(c echo.Context) error
 		FindManyBooks(c echo.Context) error
+		EditBook(c echo.Context) error
 	}
 
 	bookHttpHandler struct {
@@ -79,6 +80,27 @@ func (h *bookHttpHandler) FindManyBooks(c echo.Context) error{
 	res, err := h.bookUsecase.FindManyBooks(ctx, h.cfg.Paginate.BookNextPageUrl, req)
 	if err != nil {
 		return response.ErrResponse(c, http.StatusBadRequest, err.Error())
+	}
+
+	return response.SuccessResponse(c, http.StatusOK, res)
+}
+
+func (h *bookHttpHandler) EditBook(c echo.Context) error {
+	ctx := context.Background()
+
+	bookId := strings.TrimPrefix(c.Param("book_id"), "book:")
+
+	wrapper := request.ContextWrapper(c)
+
+	req := new(book.BookUpdateReq)
+
+	if err := wrapper.Bind(req); err != nil {
+		return response.ErrResponse(c, http.StatusBadRequest, err.Error())
+	}
+
+	res, err := h.bookUsecase.EditBook(ctx, bookId, req)
+	if err != nil {
+		return response.ErrResponse(c, http.StatusInternalServerError, err.Error())
 	}
 
 	return response.SuccessResponse(c, http.StatusCreated, res)

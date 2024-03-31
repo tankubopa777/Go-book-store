@@ -21,6 +21,7 @@ type (
 		FindOneBook(pctx context.Context, bookId string) (*book.Book, error)
 		FindManyBooks(pctx context.Context, filter primitive.D, opts []*options.FindOptions) ([]*book.BookShowCase, error)
 		CountBooks(pctx context.Context, filter primitive.D) (int64, error)
+		UpdateOneBook(pctx context.Context, bookId string, req primitive.M) error
 	}
 
 	bookRepository struct{
@@ -128,4 +129,22 @@ func (r *bookRepository) CountBooks(pctx context.Context, filter primitive.D) (i
 	}
 
 	return count, nil
+}
+
+func (r *bookRepository) UpdateOneBook(pctx context.Context, bookId string, req primitive.M) error {
+	ctx, cancel := context.WithTimeout(pctx, 10*time.Second)
+	defer cancel()
+
+	db := r.bookDbConn(ctx)
+	col := db.Collection("books")
+
+	result, err := col.UpdateOne(ctx, bson.M{"_id": utils.ConvertToObjectId(bookId)}, bson.M{"$set": req})
+	if err != nil {
+		log.Printf("Error: UpdateOneBook failed: %v", err.Error())
+		return errors.New("error: update book failed")
+	}
+	log.Printf("UpdateOneBook: %v", result.ModifiedCount)
+
+
+	return nil
 }

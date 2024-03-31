@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 	"strings"
 	"tansan/modules/book"
 	bookRepository "tansan/modules/book/bookRepository"
@@ -20,6 +21,7 @@ type (
 		CreateBook(pctx context.Context, req *book.CreateBookReq) (any, error)
 		FindOneBook(pctx context.Context, bookId string) (*book.BookShowCase, error)
 		FindManyBooks(pctx context.Context, basePaginateUrl string, req *book.BookSearchReq) (*models.PaginateRes, error)
+		EditBook(pctx context.Context, bookId string, req *book.BookUpdateReq) (*book.BookShowCase, error) 
 	}
 
 	bookUsecase struct {
@@ -129,3 +131,34 @@ func (u *bookUsecase) FindManyBooks(pctx context.Context, basePaginateUrl string
 		},
 	}, nil
 }
+
+func (u *bookUsecase) EditBook(pctx context.Context, bookId string, req *book.BookUpdateReq) (*book.BookShowCase, error) {
+	// Update Logical
+	updateReq := bson.M{}
+	if req.Title == "" {
+		if !u.bookRepository.IsUniqueBook(pctx, req.Title){
+			log.Printf("Error: EditBook failed: %v", "error: book title already exists")
+			return nil, errors.New("error: book title already exists")
+		}
+
+		updateReq["title"] = req.Title
+	}
+	if req.ImageUrl != "" {
+		updateReq["image_url"] = req.ImageUrl
+	}
+	if req.Price >= 0 {
+		updateReq["price"] = req.Price
+	}
+	if req.Damage > 0 {
+		updateReq["damage"] = req.Damage
+	}
+	updateReq["updated_at"] = utils.LocalTime()
+
+	if err := u.bookRepository.UpdateOneBook(pctx, bookId, updateReq); err != nil {
+		log.Printf("Error: EditBook failed: %v", err.Error())
+		return nil, errors.New("error: updating book failed")
+	}
+
+	return u.FindOneBook(pctx, bookId)
+}
+

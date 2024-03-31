@@ -34,4 +34,5 @@ func (s *server) bookService() {
 	book.POST("/book", s.middleware.JwtAuthorization(s.middleware.RbacAuthorization(httpHandler.CreateBook, []int{1,0})))
 	book.GET("/book/:book_id", httpHandler.FindOneBook)
 	book.GET("/book", httpHandler.FindManyBooks)
+	book.PATCH("/book/:book_id", s.middleware.JwtAuthorization(s.middleware.RbacAuthorization(httpHandler.EditBook, []int{1,0})))
 }
