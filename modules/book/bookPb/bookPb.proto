@@ -6,7 +6,7 @@ option go_package = "tansan/modules/book/bookPb";
 
 // Structure
 message FindBooksInIdsReq {
-    repeated int32 ids = 1;
+    repeated string ids = 1;
 }
 
 message FindBooksInIdsRes {

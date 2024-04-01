@@ -7,6 +7,7 @@ import (
 	"log"
 	"strings"
 	"tansan/modules/book"
+	bookPb "tansan/modules/book/bookPb"
 	bookRepository "tansan/modules/book/bookRepository"
 	"tansan/modules/models"
 	"tansan/pkg/utils"
@@ -23,6 +24,7 @@ type (
 		FindManyBooks(pctx context.Context, basePaginateUrl string, req *book.BookSearchReq) (*models.PaginateRes, error)
 		EditBook(pctx context.Context, bookId string, req *book.BookUpdateReq) (*book.BookShowCase, error)
 		EnableOrDisableBook(pctx context.Context, bookId string) (bool, error)
+		FindBooksInIds(pctx context.Context, req *bookPb.FindBooksInIdsReq) (*bookPb.FindBooksInIdsRes, error)
 	}
 
 	bookUsecase struct {
@@ -174,4 +176,36 @@ func (u *bookUsecase) EnableOrDisableBook(pctx context.Context, bookId string) (
 	}
 
 	return !result.UsageStatus,nil
+}
+
+func (u *bookUsecase) FindBooksInIds(pctx context.Context, req *bookPb.FindBooksInIdsReq) (*bookPb.FindBooksInIdsRes, error) {
+	filter := bson.D{}
+
+	objectId := make([]primitive.ObjectID, 0)
+	for _, bookId := range req.Ids{
+		objectId = append(objectId, utils.ConvertToObjectId(strings.TrimPrefix(bookId, "book:")))
+	}
+
+	filter = append(filter, bson.E{"_id", bson.D{{"$in", objectId}}})
+	filter = append(filter, bson.E{"usage_status", true})
+
+	results, err := u.bookRepository.FindManyBooks(pctx, filter, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resultsToRes := make([]*bookPb.Book, 0)
+	for _, result := range results{
+		resultsToRes = append(resultsToRes, &bookPb.Book{
+			Id : result.BookId,
+			Title: result.Title,
+			Price: result.Price,
+			Damage: int32(result.Damage),
+			ImageUrl: result.ImageUrl,
+		})
+	}
+
+	return &bookPb.FindBooksInIdsRes{
+		Books: resultsToRes,
+	}, nil
 }

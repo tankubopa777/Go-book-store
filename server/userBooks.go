@@ -34,4 +34,5 @@ func (s *server) userbooksService() {
 
 	// Health Check
 	userbooks.GET("", s.healthCheckService)
+	userbooks.GET("/userbooks/:user_id", httpHandler.FindUserBooks, s.middleware.JwtAuthorization, s.middleware.UserIdParamValidation)
 }

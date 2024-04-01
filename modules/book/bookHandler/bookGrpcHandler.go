@@ -24,5 +24,5 @@ func NewBookGrpcHandler(bookUsecase bookUsecase.BookUsecaseService) *bookGrpcHan
 }
 
 func (g *bookGrpcHandler) FindBooksInIds(ctx context.Context, req *bookPb.FindBooksInIdsReq) (*bookPb.FindBooksInIdsRes, error) {
-	return nil, nil
+	return g.bookUsecase.FindBooksInIds(ctx, req)
 }

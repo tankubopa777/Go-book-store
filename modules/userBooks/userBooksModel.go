@@ -12,12 +12,13 @@ type (
 	}
 
 	BookInUserbooks struct {
-		UserbooksId string `json:"user_books_id"`
+		UserbooksId string `json:"userbooks_id"`
+		UserId string `json:"user_id"`
 		*book.BookShowCase
 	}
 
-	UserInventory struct {
-		UserId string `json:"user_id"`
-		*models.PaginateRes `json:"data"`
+	UserbooksSearchReq struct {
+		models.PaginateReq
 	}
+
 )
